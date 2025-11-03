@@ -49,12 +49,13 @@ GET http://localhost:3000/api/health
 
 ```
 .
-├── backend/                 # API Express + SQLite
+├── backend/                 # API Express + MySql
 │   ├── package.json
 │   └── src/
-│       ├── server.js
-│       ├── db.js
-│       └── routes.js
+│       ├── controllers
+│       ├── entity
+│       └── routes
+|       └── seeds
 ├── database/
 │   └── schema.sql           # Definição das tabelas + seeds
 ├── frontend/
