@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PoC Ajuste de Notas/Frequências</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 860px; margin: 40px auto; }
+    .card { border: 1px solid #eee; padding: 16px; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.05); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 16px; }
+    a.btn { display: inline-block; padding: 10px 14px; border-radius: 8px; text-decoration: none; border: 1px solid #ddd; }
+    code { background: #f6f6f6; padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>PoC — Processo de Ajuste de Notas/Frequências</h1>
+  <p>Projeto base com backend <strong>Express + SQLite</strong> e páginas simples para a jornada Aluno → Docente → Secretaria.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Páginas</h3>
+      <p><a class="btn" href="/pages/aluno.html">Aluno — Solicitar ajuste</a></p>
+      <p><a class="btn" href="/pages/docente.html">Docente — Aprovar/Rejeitar</a></p>
+      <p><a class="btn" href="/pages/secretaria.html">Secretaria — Validar</a></p>
+    </div>
+    <div class="card">
+      <h3>API</h3>
+      <p>Verificar saúde: <code>/api/health</code></p>
+      <p>Disciplinas: <code>/api/disciplinas</code></p>
+      <p>Solicitações: <code>/api/solicitacoes</code></p>
+    </div>
+  </div>
+</body>
+</html>

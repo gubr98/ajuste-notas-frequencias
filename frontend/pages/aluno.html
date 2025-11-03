@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aluno — Solicitar ajuste</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 860px; margin: 40px auto; }
+    label { display:block; margin-top: 10px; }
+    input, select, textarea { width: 100%; padding: 8px; }
+    button { margin-top: 16px; padding: 10px 14px; }
+    .ok { color: green; } .err { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Aluno — Solicitar ajuste</h1>
+  <p><a href="/">← Voltar</a></p>
+
+  <form id="form">
+    <label>Disciplina
+      <select id="disciplina"></select>
+    </label>
+
+    <label>Tipo
+      <select id="tipo">
+        <option value="nota">Nota</option>
+        <option value="frequencia">Frequência</option>
+      </select>
+    </label>
+
+    <label>Justificativa
+      <textarea id="justificativa" rows="4" placeholder="Explique o motivo do ajuste"></textarea>
+    </label>
+
+    <div id="notaCampos">
+      <label>Nota antiga <input type="number" step="0.01" id="nota_antiga"></label>
+      <label>Nota solicitada <input type="number" step="0.01" id="nota_solicitada"></label>
+    </div>
+
+    <div id="freqCampos" style="display:none;">
+      <label>Frequência antiga (%) <input type="number" step="0.1" id="frequencia_antiga"></label>
+      <label>Frequência solicitada (%) <input type="number" step="0.1" id="frequencia_solicitada"></label>
+    </div>
+
+    <button type="submit">Enviar solicitação</button>
+  </form>
+
+  <p id="msg"></p>
+
+  <script>
+    const tipoSel = document.getElementById('tipo');
+    const notaCampos = document.getElementById('notaCampos');
+    const freqCampos = document.getElementById('freqCampos');
+
+    tipoSel.addEventListener('change', () => {
+      const t = tipoSel.value;
+      notaCampos.style.display = t === 'nota' ? 'block' : 'none';
+      freqCampos.style.display = t === 'frequencia' ? 'block' : 'none';
+    });
+
+    async function carregarDisciplinas() {
+      const res = await fetch('/api/disciplinas');
+      const data = await res.json();
+      const sel = document.getElementById('disciplina');
+      sel.innerHTML = data.map(d => `<option value="${d.id}">${d.nome}</option>`).join('');
+    }
+    carregarDisciplinas();
+
+    document.getElementById('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {
+        disciplina_id: Number(document.getElementById('disciplina').value),
+        tipo: document.getElementById('tipo').value,
+        justificativa: document.getElementById('justificativa').value || '',
+        nota_antiga: document.getElementById('nota_antiga').value || null,
+        nota_solicitada: document.getElementById('nota_solicitada').value || null,
+        frequencia_antiga: document.getElementById('frequencia_antiga').value || null,
+        frequencia_solicitada: document.getElementById('frequencia_solicitada').value || null
+      };
+
+      try {
+        const res = await fetch('/api/solicitacoes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('msg').textContent = 'Solicitação enviada com sucesso! ID: ' + data.id;
+          document.getElementById('msg').className = 'ok';
+        } else {
+          document.getElementById('msg').textContent = data.error || 'Erro ao enviar.';
+          document.getElementById('msg').className = 'err';
+        }
+      } catch (err) {
+        document.getElementById('msg').textContent = 'Erro de rede.';
+        document.getElementById('msg').className = 'err';
+      }
+    });
+  </script>
+</body>
+</html>
