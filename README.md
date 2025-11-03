@@ -75,19 +75,6 @@ PORT=3000
 DB_PATH=../database/db.sqlite
 ```
 
-## 🚀 Publicar no GitHub e adicionar colaboradores
-
-Se você ainda não subiu o projeto para o GitHub, siga os passos abaixo usando **este repositório**:
-
-1. No terminal, dentro da pasta do projeto:
-   ```bash
-   git init
-   git add .
-   git commit -m "chore: projeto base PoC ajuste de notas"
-   git branch -M main
-   git remote add origin https://github.com/gubr98/ajuste-notas-frequencias.git
-   git push -u origin main
-   ```
 2. Para adicionar os colegas como colaboradores:  
    Acesse **Settings → Collaborators → Add people** e adicione cada integrante.
 
