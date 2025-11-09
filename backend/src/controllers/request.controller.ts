@@ -15,34 +15,44 @@ async function ensureDataSource() {
 }
 
 export async function createRequest(req: Request, res: Response) {
-  await ensureDataSource();
-  const repo = dataSource.getRepository(AdjustmentRequest);
-  const userRepo = dataSource.getRepository(User);
+  try {
+    await ensureDataSource();
+    const repo = dataSource.getRepository(AdjustmentRequest);
+    const userRepo = dataSource.getRepository(User);
 
-  const { studentEmail, courseCode, discipline, description, evidenceFiles } =
-    req.body;
-  const student = await userRepo.findOne({ where: { email: studentEmail } });
-  if (!student) return res.status(404).json({ error: "Student not found" });
+    const { studentEmail, courseCode, discipline, description, evidenceFiles } =
+      req.body;
+    
+    if (!studentEmail || !courseCode || !discipline || !description) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
 
-  const r = repo.create({
-    student,
-    courseCode,
-    discipline,
-    description,
-    evidenceFiles,
-  });
-  const saved = await repo.save(r);
+    const student = await userRepo.findOne({ where: { email: studentEmail } });
+    if (!student) return res.status(404).json({ error: "Student not found" });
 
-  const auditRepo = dataSource.getRepository(AuditLog);
-  await auditRepo.save({
-    entity: "AdjustmentRequest",
-    entityId: saved.id,
-    action: "create",
-    payload: JSON.stringify({ createdBy: student.email }),
-    performedBy: student.email,
-  });
+    const r = repo.create({
+      student,
+      courseCode,
+      discipline,
+      description,
+      evidenceFiles: evidenceFiles || "",
+    });
+    const saved = await repo.save(r);
 
-  return res.status(201).json(saved);
+    const auditRepo = dataSource.getRepository(AuditLog);
+    await auditRepo.save({
+      entity: "AdjustmentRequest",
+      entityId: saved.id,
+      action: "create",
+      payload: JSON.stringify({ createdBy: student.email }),
+      performedBy: student.email,
+    });
+
+    return res.status(201).json(saved);
+  } catch (error) {
+    console.error("Error creating request:", error);
+    return res.status(500).json({ error: "Internal server error", message: error instanceof Error ? error.message : String(error) });
+  }
 }
 
 export async function listRequests(req: Request, res: Response) {

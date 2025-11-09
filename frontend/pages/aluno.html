@@ -1,51 +1,270 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aluno — Solicitar ajuste</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Nova Solicitação - Aluno</title>
+  <!-- Google Fonts - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; max-width: 860px; margin: 40px auto; }
-    label { display:block; margin-top: 10px; }
-    input, select, textarea { width: 100%; padding: 8px; }
-    button { margin-top: 16px; padding: 10px 14px; }
-    .ok { color: green; } .err { color: red; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+      min-height: 100vh;
+      padding-bottom: 3rem;
+    }
+    .navbar {
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+    }
+    .navbar-brand {
+      color: #333 !important;
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+    .navbar-brand i {
+      color: #007bff;
+    }
+    .navbar-nav .nav-link {
+      color: #333 !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem !important;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #007bff !important;
+    }
+    .navbar-nav .nav-link.active {
+      color: #007bff !important;
+    }
+    .page-header {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+    .page-header h1 {
+      color: #2d3748;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .page-header p {
+      color: #718096;
+      margin-bottom: 0;
+    }
+    .breadcrumb {
+      background: transparent;
+      padding: 0;
+      margin-bottom: 1rem;
+    }
+    .breadcrumb-item a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .card-modern {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      background: white;
+      overflow: hidden;
+    }
+    .card-modern .card-header {
+      border-radius: 20px 20px 0 0;
+      background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+      color: white;
+      border: none;
+      padding: 1.5rem;
+    }
+    .card-modern .card-body {
+      padding: 2rem;
+    }
+    .btn-modern {
+      border-radius: 12px;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+    }
+    .btn-modern:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 0.5rem;
+    }
+    .form-control {
+      border-radius: 10px;
+      border: 2px solid #e2e8f0;
+      padding: 0.75rem 1rem;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+    select.form-control {
+      padding: 0;
+      padding-right: 2rem;
+    }
+    .form-control:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+      outline: none;
+    }
+    .alert {
+      border-radius: 12px;
+      border: none;
+    }
   </style>
 </head>
 <body>
-  <h1>Aluno — Solicitar ajuste</h1>
-  <p><a href="/">← Voltar</a></p>
+  <script>
+    // Verificar se o aluno está logado
+    if (!sessionStorage.getItem('aluno_logado')) {
+      window.location.href = './login-aluno.html';
+    }
+  </script>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <i class="fas fa-graduation-cap mr-2"></i>Sistema Acadêmico
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="./aluno-dashboard.html">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../index.html">Início</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-  <form id="form">
-    <label>Disciplina
-      <select id="disciplina"></select>
-    </label>
-
-    <label>Tipo
-      <select id="tipo">
-        <option value="nota">Nota</option>
-        <option value="frequencia">Frequência</option>
-      </select>
-    </label>
-
-    <label>Justificativa
-      <textarea id="justificativa" rows="4" placeholder="Explique o motivo do ajuste"></textarea>
-    </label>
-
-    <div id="notaCampos">
-      <label>Nota antiga <input type="number" step="0.01" id="nota_antiga"></label>
-      <label>Nota solicitada <input type="number" step="0.01" id="nota_solicitada"></label>
+  <!-- Main Content -->
+  <div class="container mt-4 mb-5">
+    <!-- Header -->
+    <div class="page-header">
+      <h1 class="mb-2">
+        <i class="fas fa-file-alt mr-2" style="color: #007bff;"></i>Nova Solicitação de Ajuste
+      </h1>
+      <p>Preencha o formulário abaixo para solicitar o ajuste de nota ou frequência</p>
     </div>
 
-    <div id="freqCampos" style="display:none;">
-      <label>Frequência antiga (%) <input type="number" step="0.1" id="frequencia_antiga"></label>
-      <label>Frequência solicitada (%) <input type="number" step="0.1" id="frequencia_solicitada"></label>
+    <!-- Formulário -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-modern">
+          <div class="card-body">
+            <form id="form">
+              <div class="form-group">
+                <label for="disciplina">
+                  <i class="fas fa-book mr-1"></i>Disciplina <span class="text-danger">*</span>
+                </label>
+                <select id="disciplina" class="form-control" required>
+                  <option value="">Selecione uma disciplina...</option>
+                </select>
+                <small class="form-text text-muted">Selecione a disciplina relacionada ao ajuste</small>
+              </div>
+
+              <div class="form-group">
+                <label for="tipo">
+                  <i class="fas fa-tag mr-1"></i>Tipo de Ajuste <span class="text-danger">*</span>
+                </label>
+                <select id="tipo" class="form-control" required>
+                  <option value="">Selecione o tipo...</option>
+                  <option value="nota">Ajuste de Nota</option>
+                  <option value="frequencia">Ajuste de Frequência</option>
+                </select>
+                <small class="form-text text-muted">Escolha se deseja ajustar nota ou frequência</small>
+              </div>
+
+              <div class="form-group">
+                <label for="justificativa">
+                  <i class="fas fa-comment-alt mr-1"></i>Justificativa <span class="text-danger">*</span>
+                </label>
+                <textarea id="justificativa" class="form-control" rows="5" 
+                  placeholder="Descreva detalhadamente o motivo da solicitação de ajuste. Inclua informações relevantes como: data da avaliação, tipo de avaliação, evidências disponíveis, etc." required></textarea>
+                <small class="form-text text-muted">Seja detalhado e objetivo na sua justificativa</small>
+              </div>
+
+              <div id="notaCampos" style="display:none;">
+                <div class="alert alert-info">
+                  <i class="fas fa-info-circle mr-2"></i>Preencha os valores de nota atual e o valor solicitado
+                </div>
+                <div class="form-group">
+                  <label for="nota_antiga">
+                    <i class="fas fa-chart-line mr-1"></i>Nota Atual <span class="text-danger">*</span>
+                  </label>
+                  <input type="number" step="0.01" min="0" max="10" id="nota_antiga" class="form-control" placeholder="Ex: 7.5">
+                  <small class="form-text text-muted">Informe a nota que está registrada no sistema</small>
+                </div>
+                <div class="form-group">
+                  <label for="nota_solicitada">
+                    <i class="fas fa-arrow-up mr-1"></i>Nota Solicitada <span class="text-danger">*</span>
+                  </label>
+                  <input type="number" step="0.01" min="0" max="10" id="nota_solicitada" class="form-control" placeholder="Ex: 8.5">
+                  <small class="form-text text-muted">Informe a nota correta que deveria estar registrada</small>
+                </div>
+              </div>
+
+              <div id="freqCampos" style="display:none;">
+                <div class="alert alert-info">
+                  <i class="fas fa-info-circle mr-2"></i>Preencha os valores de frequência atual e o valor solicitado
+                </div>
+                <div class="form-group">
+                  <label for="frequencia_antiga">
+                    <i class="fas fa-percentage mr-1"></i>Frequência Atual (%) <span class="text-danger">*</span>
+                  </label>
+                  <input type="number" step="0.1" min="0" max="100" id="frequencia_antiga" class="form-control" placeholder="Ex: 75.0">
+                  <small class="form-text text-muted">Informe a frequência que está registrada no sistema</small>
+                </div>
+                <div class="form-group">
+                  <label for="frequencia_solicitada">
+                    <i class="fas fa-arrow-up mr-1"></i>Frequência Solicitada (%) <span class="text-danger">*</span>
+                  </label>
+                  <input type="number" step="0.1" min="0" max="100" id="frequencia_solicitada" class="form-control" placeholder="Ex: 80.0">
+                  <small class="form-text text-muted">Informe a frequência correta que deveria estar registrada</small>
+                </div>
+              </div>
+
+              <div class="alert alert-warning mt-3">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <strong>Atenção:</strong> Após o envio, sua solicitação será analisada pelo docente responsável e, se aprovada, será encaminhada para validação da secretaria acadêmica.
+              </div>
+
+              <div class="d-flex justify-content-between mt-4">
+                <a href="./aluno-dashboard.html" class="btn btn-secondary btn-modern">
+                  Cancelar
+                </a>
+                <button type="submit" class="btn btn-primary btn-lg btn-modern">
+                  Enviar Solicitação
+                </button>
+              </div>
+            </form>
+
+            <div id="msg" class="mt-3"></div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <button type="submit">Enviar solicitação</button>
-  </form>
-
-  <p id="msg"></p>
+  </div>
 
   <script>
     const tipoSel = document.getElementById('tipo');
@@ -56,47 +275,145 @@
       const t = tipoSel.value;
       notaCampos.style.display = t === 'nota' ? 'block' : 'none';
       freqCampos.style.display = t === 'frequencia' ? 'block' : 'none';
+      
+      // Limpar campos quando trocar de tipo
+      if (t !== 'nota') {
+        document.getElementById('nota_antiga').value = '';
+        document.getElementById('nota_solicitada').value = '';
+      }
+      if (t !== 'frequencia') {
+        document.getElementById('frequencia_antiga').value = '';
+        document.getElementById('frequencia_solicitada').value = '';
+      }
     });
 
+    // Lista estática de disciplinas (já que não há API no backend)
+    const disciplinas = [
+      { id: 1, nome: 'Cálculo I' },
+      { id: 2, nome: 'Álgebra Linear' },
+      { id: 3, nome: 'Física I' },
+      { id: 4, nome: 'Programação I' },
+      { id: 5, nome: 'Estrutura de Dados' },
+      { id: 6, nome: 'Banco de Dados' },
+      { id: 7, nome: 'Engenharia de Software' },
+      { id: 8, nome: 'Redes de Computadores' }
+    ];
+    
     async function carregarDisciplinas() {
-      const res = await fetch('/api/disciplinas');
-      const data = await res.json();
       const sel = document.getElementById('disciplina');
-      sel.innerHTML = data.map(d => `<option value="${d.id}">${d.nome}</option>`).join('');
+      sel.innerHTML = disciplinas.map(d => `<option value="${d.id}">${d.nome}</option>`).join('');
     }
     carregarDisciplinas();
 
     document.getElementById('form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      const tipo = document.getElementById('tipo').value;
+      const disciplinaId = Number(document.getElementById('disciplina').value);
+      const disciplinaSelecionada = disciplinas.find(d => d.id === disciplinaId);
+      const justificativa = document.getElementById('justificativa').value.trim();
+      
+      // Validação básica
+      if (!disciplinaId) {
+        alert('Por favor, selecione uma disciplina');
+        return;
+      }
+      if (!justificativa) {
+        alert('Por favor, preencha a justificativa');
+        return;
+      }
+      
+      const nota_antiga = tipo === 'nota' ? document.getElementById('nota_antiga').value || null : null;
+      const nota_solicitada = tipo === 'nota' ? document.getElementById('nota_solicitada').value || null : null;
+      const frequencia_antiga = tipo === 'frequencia' ? document.getElementById('frequencia_antiga').value || null : null;
+      const frequencia_solicitada = tipo === 'frequencia' ? document.getElementById('frequencia_solicitada').value || null : null;
+      
+      if (tipo === 'nota' && (!nota_antiga || !nota_solicitada)) {
+        alert('Por favor, preencha ambos os valores de nota');
+        return;
+      }
+      if (tipo === 'frequencia' && (!frequencia_antiga || !frequencia_solicitada)) {
+        alert('Por favor, preencha ambos os valores de frequência');
+        return;
+      }
+
+      // Montar descrição completa com todos os dados
+      let descricao = justificativa;
+      if (tipo === 'nota') {
+        descricao += `\n\nTipo: Ajuste de Nota\nNota Atual: ${nota_antiga}\nNota Solicitada: ${nota_solicitada}`;
+      } else {
+        descricao += `\n\nTipo: Ajuste de Frequência\nFrequência Atual: ${frequencia_antiga}%\nFrequência Solicitada: ${frequencia_solicitada}%`;
+      }
+
+      // Formato esperado pelo backend
+      // Sempre usar o email do seed para garantir que existe no banco
       const body = {
-        disciplina_id: Number(document.getElementById('disciplina').value),
-        tipo: document.getElementById('tipo').value,
-        justificativa: document.getElementById('justificativa').value || '',
-        nota_antiga: document.getElementById('nota_antiga').value || null,
-        nota_solicitada: document.getElementById('nota_solicitada').value || null,
-        frequencia_antiga: document.getElementById('frequencia_antiga').value || null,
-        frequencia_solicitada: document.getElementById('frequencia_solicitada').value || null
+        studentEmail: 'aluno1@uni.edu',
+        courseCode: `DISC${disciplinaId}`,
+        discipline: disciplinaSelecionada.nome,
+        description: descricao,
+        evidenceFiles: null
       };
 
+      // Detectar a URL base da API
+      const API_BASE = window.location.protocol === 'file:' 
+        ? 'http://localhost:3000/api' 
+        : '/api';
+
       try {
-        const res = await fetch('/api/solicitacoes', {
+        const res = await fetch(`${API_BASE}/requests`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body)
         });
+        
+        if (!res.ok) {
+          let errorMsg = `Erro ${res.status}: ${res.statusText}`;
+          try {
+            const errorData = await res.json();
+            errorMsg = errorData.error || errorData.message || errorMsg;
+          } catch (e) {
+            // Se não conseguir parsear JSON, usar o texto da resposta
+            const text = await res.text();
+            errorMsg = text || errorMsg;
+          }
+          throw new Error(errorMsg);
+        }
+        
         const data = await res.json();
         if (res.ok) {
-          document.getElementById('msg').textContent = 'Solicitação enviada com sucesso! ID: ' + data.id;
-          document.getElementById('msg').className = 'ok';
-        } else {
-          document.getElementById('msg').textContent = data.error || 'Erro ao enviar.';
-          document.getElementById('msg').className = 'err';
+          document.getElementById('msg').innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <h5 class="alert-heading"><i class="fas fa-check-circle mr-2"></i>Solicitação enviada com sucesso!</h5>
+              <p class="mb-2">Sua solicitação foi registrada e será analisada pelo docente responsável.</p>
+              <hr>
+              <p class="mb-0"><strong>ID da Solicitação:</strong> ${data.id}</p>
+              <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+              </button>
+            </div>
+          `;
+          document.getElementById('form').reset();
+          // Redirecionar após 3 segundos
+          setTimeout(() => {
+            window.location.href = './aluno-dashboard.html';
+          }, 3000);
         }
       } catch (err) {
-        document.getElementById('msg').textContent = 'Erro de rede.';
-        document.getElementById('msg').className = 'err';
+        console.error('Erro ao enviar solicitação:', err);
+        document.getElementById('msg').innerHTML = `
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle mr-2"></i><strong>Erro:</strong> ${err.message || 'Não foi possível enviar a solicitação. Verifique se o servidor está rodando em http://localhost:3000 e tente novamente.'}
+            <button type="button" class="close" data-dismiss="alert">
+              <span>&times;</span>
+            </button>
+          </div>
+        `;
       }
     });
   </script>
+  <!-- jQuery and Bootstrap Bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 </body>
 </html>

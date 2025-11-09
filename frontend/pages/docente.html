@@ -1,81 +1,503 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Docente — Aprovar/Rejeitar</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Painel do Docente</title>
+  <!-- Google Fonts - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; max-width: 960px; margin: 40px auto; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ddd; padding: 8px; }
-    th { background: #f6f6f6; text-align: left; }
-    button { padding: 6px 10px; margin-right: 6px; }
-    .ok { color: green; } .err { color: red; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+      min-height: 100vh;
+      padding-bottom: 3rem;
+    }
+    .navbar {
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+    }
+    .navbar-brand {
+      color: #333 !important;
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+    .navbar-brand i {
+      color: #28a745;
+    }
+    .navbar-nav .nav-link {
+      color: #333 !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem !important;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #28a745 !important;
+    }
+    .navbar-nav .nav-link.active {
+      color: #28a745 !important;
+    }
+    .page-header {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+    .page-header h1 {
+      color: #2d3748;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+    .page-header p {
+      color: #718096;
+      margin-bottom: 0;
+    }
+    .card-modern {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      background: white;
+      overflow: hidden;
+    }
+    .card-modern .card-header {
+      border-radius: 20px 20px 0 0;
+      background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+      color: white;
+      border: none;
+      padding: 1.5rem;
+    }
+    .card-modern .card-body {
+      padding: 1.5rem;
+    }
+    .btn-modern {
+      border-radius: 12px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .btn-modern:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .form-control {
+      border-radius: 10px;
+      border: 2px solid #e2e8f0;
+      padding: 0.75rem 1rem;
+      transition: all 0.3s ease;
+    }
+    select.form-control {
+      padding: 0;
+      padding-right: 2rem;
+    }
+    .form-control:focus {
+      border-color: #28a745;
+      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15);
+      outline: none;
+    }
+    .table {
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 0;
+    }
+    .table thead th {
+      background: #f7fafc;
+      color: #2d3748;
+      font-weight: 600;
+      border-bottom: 2px solid #e2e8f0;
+      padding: 1rem;
+    }
+    .table tbody td {
+      padding: 1rem;
+      vertical-align: middle;
+    }
+    .table tbody tr:hover {
+      background: #f7fafc;
+    }
   </style>
 </head>
 <body>
-  <h1>Docente — Aprovar/Rejeitar</h1>
-  <p><a href="/">← Voltar</a></p>
+  <script>
+    // Verificar se o docente está logado
+    if (!sessionStorage.getItem('docente_logado')) {
+      window.location.href = './login-docente.html';
+    }
+  </script>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <i class="fas fa-graduation-cap mr-2"></i>Sistema Acadêmico
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="../index.html">Início</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-  <div>
-    <label>Filtrar por status:
-      <select id="status">
-        <option value="em_analise">Em análise</option>
-        <option value="aprovado_docente">Aprovado docente</option>
-        <option value="rejeitado_docente">Rejeitado docente</option>
-        <option value="validado_secretaria">Validado secretaria</option>
-      </select>
-    </label>
-    <button id="atualizar">Atualizar</button>
+  <!-- Main Content -->
+  <div class="container mt-4 mb-4">
+    <div class="page-header">
+      <h1>
+        <i class="fas fa-chalkboard-teacher mr-2" style="color: #28a745;"></i>Painel do Docente
+      </h1>
+      <p>Analise e responda às solicitações de ajuste de notas e frequências</p>
+    </div>
+
+    <div class="row">
+      <div class="col-12 mb-3">
+        <div class="card card-modern">
+          <div class="card-body">
+            <div class="form-group mb-4">
+              <label for="status">Filtrar por status:</label>
+              <div class="input-group">
+                <select id="status" class="form-control">
+                  <option value="pending">Em análise</option>
+                  <option value="in_review">Em revisão</option>
+                  <option value="approved">Aprovado</option>
+                  <option value="rejected">Rejeitado</option>
+                  <option value="validated">Validado</option>
+                </select>
+                <div class="input-group-append">
+                  <button id="atualizar" class="btn btn-success btn-modern">Atualizar</button>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table id="tabela" class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Aluno</th>
+                    <th>Disciplina</th>
+                    <th>Tipo</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="msg" class="mt-3"></div>
   </div>
 
-  <table id="tabela">
-    <thead>
-      <tr>
-        <th>ID</th><th>Aluno</th><th>Disciplina</th><th>Tipo</th><th>Status</th><th>Ações</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <!-- Modal de Detalhes -->
+  <div class="modal fade" id="detalhesModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-info-circle mr-2"></i>Detalhes da Solicitação</h5>
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        </div>
+        <div class="modal-body" id="detalhesContent"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <p id="msg"></p>
+  <!-- Modal Aprovar -->
+  <div class="modal fade" id="aprovarModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title"><i class="fas fa-check-circle mr-2"></i>Aprovar Solicitação</h5>
+          <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <p>Confirma a aprovação desta solicitação?</p>
+          <div class="form-group">
+            <label for="justificativaAprovar">Justificativa/Observações:</label>
+            <textarea id="justificativaAprovar" class="form-control" rows="3" 
+              placeholder="Adicione observações sobre a aprovação (opcional)"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success" onclick="confirmarAprovar()">
+            <i class="fas fa-check mr-1"></i>Confirmar Aprovação
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Rejeitar -->
+  <div class="modal fade" id="rejeitarModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title"><i class="fas fa-times-circle mr-2"></i>Rejeitar Solicitação</h5>
+          <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <p>Confirma a rejeição desta solicitação?</p>
+          <div class="form-group">
+            <label for="justificativaRejeitar">Justificativa da Rejeição: <span class="text-danger">*</span></label>
+            <textarea id="justificativaRejeitar" class="form-control" rows="3" 
+              placeholder="Explique o motivo da rejeição" required></textarea>
+            <small class="form-text text-muted">É obrigatório informar o motivo da rejeição</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" onclick="confirmarRejeitar()">
+            <i class="fas fa-times mr-1"></i>Confirmar Rejeição
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
+    // Detectar a URL base da API
+    const API_BASE = window.location.protocol === 'file:' 
+      ? 'http://localhost:3000/api' 
+      : '/api';
+    
+    let solicitacaoAtual = null;
     async function carregar() {
       const status = document.getElementById('status').value;
-      const res = await fetch('/api/solicitacoes?status=' + status);
+      const res = await fetch(`${API_BASE}/requests?status=${status}`);
       const data = await res.json();
       const tbody = document.querySelector('#tabela tbody');
-      tbody.innerHTML = data.map(s => `
-        <tr>
-          <td>${s.id}</td>
-          <td>${s.aluno_nome || '-'}</td>
-          <td>${s.disciplina_nome || s.disciplina_id}</td>
-          <td>${s.tipo}</td>
-          <td>${s.status}</td>
-          <td>
-            <button onclick="alterar(${s.id}, 'aprovado_docente')">Aprovar</button>
-            <button onclick="alterar(${s.id}, 'rejeitado_docente')">Rejeitar</button>
-          </td>
-        </tr>
-      `).join('');
+      if (data.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4">
+              <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+              Nenhuma solicitação encontrada para este status
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = data.map(s => {
+          const mapped = mapearSolicitacao(s);
+          return `
+          <tr>
+            <td><strong>#${mapped.id.substring(0, 8)}</strong></td>
+            <td>${mapped.aluno_nome}</td>
+            <td>${mapped.disciplina_nome}</td>
+            <td><span class="badge badge-secondary">${mapped.tipo}</span></td>
+            <td>${getStatusBadge(mapped.status)}</td>
+            <td>
+              <button onclick="verDetalhes('${mapped.id}')" class="btn btn-sm btn-outline-info btn-modern mr-1" title="Ver detalhes">
+                <i class="fas fa-eye"></i>
+              </button>
+              ${mapped.status === 'pending' || mapped.status === 'in_review' ? `
+                <button onclick="abrirModalAprovar('${mapped.id}')" class="btn btn-success btn-sm btn-modern mr-1" title="Aprovar">
+                  <i class="fas fa-check"></i>
+                </button>
+                <button onclick="abrirModalRejeitar('${mapped.id}')" class="btn btn-danger btn-sm btn-modern" title="Rejeitar">
+                  <i class="fas fa-times"></i>
+                </button>
+              ` : '<span class="text-muted">-</span>'}
+            </td>
+          </tr>
+        `;
+        }).join('');
+      }
     }
 
-    async function alterar(id, status) {
-      const body = { status, usuario_id: 2, observacoes: '' };
-      const res = await fetch('/api/solicitacoes/' + id + '/status', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+    function formatDate(dateString) {
+      if (!dateString) return '-';
+      const date = new Date(dateString);
+      return date.toLocaleDateString('pt-BR', { 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
       });
-      const data = await res.json();
-      if (res.ok) {
-        document.getElementById('msg').textContent = 'Solicitação ' + id + ' atualizada para ' + status;
-        document.getElementById('msg').className = 'ok';
-        carregar();
-      } else {
-        document.getElementById('msg').textContent = data.error || 'Erro ao atualizar.';
-        document.getElementById('msg').className = 'err';
+    }
+
+    function getStatusBadge(status) {
+      const statusMap = {
+        'pending': { class: 'warning', text: 'Em Análise' },
+        'in_review': { class: 'warning', text: 'Em Análise' },
+        'approved': { class: 'success', text: 'Aprovado' },
+        'rejected': { class: 'danger', text: 'Rejeitado' },
+        'validated': { class: 'info', text: 'Validado' },
+        // Compatibilidade com valores antigos
+        'em_analise': { class: 'warning', text: 'Em Análise' },
+        'aprovado_docente': { class: 'success', text: 'Aprovado' },
+        'rejeitado_docente': { class: 'danger', text: 'Rejeitado' },
+        'validado_secretaria': { class: 'info', text: 'Validado' }
+      };
+      const s = statusMap[status] || { class: 'secondary', text: status };
+      return `<span class="badge badge-${s.class}">${s.text}</span>`;
+    }
+    
+    function mapearSolicitacao(s) {
+      // Mapear dados do backend para o formato esperado pelo frontend
+      return {
+        id: s.id,
+        aluno_nome: s.student?.name || s.student?.email || '-',
+        disciplina_nome: s.discipline || '-',
+        disciplina_id: s.discipline || '-',
+        tipo: s.description?.includes('Ajuste de Nota') ? 'nota' : (s.description?.includes('Ajuste de Frequência') ? 'frequencia' : '-'),
+        status: s.status,
+        justificativa: s.description || '-',
+        decisionNote: s.decisionNote || null,
+        createdAt: s.createdAt,
+        created_at: s.createdAt,
+        updatedAt: s.updatedAt,
+        updated_at: s.updatedAt
+      };
+    }
+
+    async function verDetalhes(id) {
+      try {
+        const res = await fetch(`${API_BASE}/requests/${id}`);
+        const data = await res.json();
+        const mapped = mapearSolicitacao(data);
+        
+        const content = `
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <h6 class="text-muted">ID</h6>
+              <p><strong>${mapped.id}</strong></p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <h6 class="text-muted">Status</h6>
+              <p>${getStatusBadge(mapped.status)}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <h6 class="text-muted">Aluno</h6>
+              <p>${mapped.aluno_nome}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <h6 class="text-muted">Disciplina</h6>
+              <p>${mapped.disciplina_nome}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <h6 class="text-muted">Tipo</h6>
+              <p><span class="badge badge-secondary">${mapped.tipo}</span></p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <h6 class="text-muted">Data de Criação</h6>
+              <p>${formatDate(mapped.createdAt || mapped.created_at)}</p>
+            </div>
+            <div class="col-12 mb-3">
+              <h6 class="text-muted">Justificativa do Aluno</h6>
+              <p class="border p-3 rounded">${mapped.justificativa.replace(/\n/g, '<br>')}</p>
+            </div>
+            ${mapped.decisionNote ? `
+              <div class="col-12 mb-3">
+                <h6 class="text-muted">Observações Anteriores</h6>
+                <p class="border p-3 rounded bg-light">${mapped.decisionNote}</p>
+              </div>
+            ` : ''}
+          </div>
+        `;
+        
+        document.getElementById('detalhesContent').innerHTML = content;
+        $('#detalhesModal').modal('show');
+      } catch (err) {
+        alert('Erro ao carregar detalhes');
+      }
+    }
+
+    function abrirModalAprovar(id) {
+      solicitacaoAtual = id;
+      document.getElementById('justificativaAprovar').value = '';
+      $('#aprovarModal').modal('show');
+    }
+
+    function abrirModalRejeitar(id) {
+      solicitacaoAtual = id;
+      document.getElementById('justificativaRejeitar').value = '';
+      $('#rejeitarModal').modal('show');
+    }
+
+    async function confirmarAprovar() {
+      if (!solicitacaoAtual) return;
+      
+      const justificativa = document.getElementById('justificativaAprovar').value.trim();
+      const body = { 
+        status: 'approved', 
+        decisionNote: justificativa
+      };
+      
+      await alterarStatus(solicitacaoAtual, body, 'Aprovada');
+    }
+
+    async function confirmarRejeitar() {
+      if (!solicitacaoAtual) return;
+      
+      const justificativa = document.getElementById('justificativaRejeitar').value.trim();
+      if (!justificativa) {
+        alert('Por favor, informe o motivo da rejeição');
+        return;
+      }
+      
+      const body = { 
+        status: 'rejected', 
+        decisionNote: justificativa
+      };
+      
+      await alterarStatus(solicitacaoAtual, body, 'Rejeitada');
+    }
+
+    async function alterarStatus(id, body, acao) {
+      try {
+        const res = await fetch(`${API_BASE}/requests/${id}/status`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        
+        if (res.ok) {
+          $('#aprovarModal').modal('hide');
+          $('#rejeitarModal').modal('hide');
+          document.getElementById('msg').innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show">
+              <i class="fas fa-check-circle mr-2"></i>
+              Solicitação ${acao.toLowerCase()} com sucesso!
+              <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+            </div>
+          `;
+          carregar();
+        } else {
+          document.getElementById('msg').innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show">
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              ${data.error || 'Erro ao atualizar solicitação'}
+              <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+            </div>
+          `;
+        }
+      } catch (err) {
+        document.getElementById('msg').innerHTML = `
+          <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            Erro de conexão. Tente novamente.
+            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+          </div>
+        `;
       }
     }
 
@@ -83,5 +505,8 @@
     document.getElementById('status').addEventListener('change', carregar);
     carregar();
   </script>
+  <!-- jQuery and Bootstrap Bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 </body>
 </html>
