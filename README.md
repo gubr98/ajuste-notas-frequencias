@@ -5,6 +5,36 @@
 Este repositório contém um **template pronto** para a prova de conceito do sistema de **Ajuste de Notas/Frequências**.  
 Ele já vem com backend (Node + Express) e um frontend simples em HTML/JS para demonstrar o fluxo básico.
 
+## Descrição do projeto 
+
+Projeto em desenvolvimento para auxiliar na administração acadêmica. 
+Desenvolvido para instituições de ensino que buscam excelência, o sistema oferece uma plataforma moderna, intuitiva e altamente segura para centralizar, organizar e gerenciar todas as informações acadêmicas.
+
+![alt text](image.png)
+
+## Objetivos
+
+- **Tudo em um só lugar**: Centralizar as informações acadêmicas é um sonho para qualquer instituição. Chega de se perder em planilhas e papéis! 
+
+- **Fácil de usar**: Uma interface intuitiva é super importante. Se for simples de navegar, todo mundo vai conseguir usar sem dor de cabeça, desde os alunos, professores, além da equipe da administração. 
+
+- **Melhor para todos**: A experiência de alunos, professores e administradores acadêmicos sendo aprimorada é o ponto chave. Um sistema que funciona bem faz toda a diferença no dia a dia. 
+
+- **Pensando no futuro**: A escalabilidade e a flexibilidade são ótimas porque o sistema poderá crescer junto com a instituição e se adaptar a novas tecnologias e exigências que surgirem. 
+
+## Justificativa
+
+- **Demanda por Consistência e Rastreabilidade de Dados**: Há uma necessidade clara por sistemas que garantam a integridade e a origem dos dados acadêmicos. 
+
+- **Redução de Retrabalho Administrativo**: O objetivo é otimizar processos, diminuindo a necessidade de tarefas repetitivas e manuais. 
+
+- **Aprimoramento da Experiência do Usuário**: Tornar a interação com o sistema mais agradável e eficiente para estudantes, professores e administradores. 
+
+- **Reforço da Segurança e Conformidade Legal**: Garantir que as informações estejam protegidas e que a instituição esteja em conformidade com as leis e normas vigentes (governança digital). 
+
+
+
+
 ## Integrantes
 - Caio  
 - Gustavo  
