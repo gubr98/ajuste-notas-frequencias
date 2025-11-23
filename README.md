@@ -36,12 +36,12 @@ Desenvolvido para instituições de ensino que buscam excelência, o sistema ofe
 
 
 ## Integrantes
-- Caio  
-- Gustavo  
-- Patrícia  
-- Kevin  
-- Nicole  
-- Mariana  
+- Caio Cesar Santiago Rodrigues
+- Gustavo Gomes de Oliveira 
+- Patrícia de carvalho
+- Kevin Souza de Moura
+- Nicole Alves Silva
+- Mariana Moraes Bezerra
 
 ## Tecnologias
 
@@ -225,3 +225,7 @@ Content-Type: application/json
 - O servidor precisa estar rodando na porta 3000 para as requisições funcionarem
 - As páginas HTML podem ser abertas diretamente (file://) ou servidas pelo backend
 - O sistema detecta automaticamente o protocolo e ajusta as URLs da API
+
+## Vídeo de apresentação 
+
+[![Assista ao vídeo](https://img.youtube.com/vi/s__JRjy30lw/0.jpg)](https://youtu.be/s__JRjy30lw)
